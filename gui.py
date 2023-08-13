@@ -22,7 +22,7 @@ def error():
     messagebox.showerror("PreTube Error", "Invalid Link (URL)")
 
 
-def test():
+def main():
     choice = q.get()
     value = Input.get()
 
@@ -52,7 +52,7 @@ def test():
     
 
 Input = Entry(root, width=70,fg = text_color, bg=clr, font="Helvetica 19")
-button = Button(root, text="Download", fg=background, bg=clr, command=test, font="Arial 19")
+button = Button(root, text="Download", fg=background, bg=clr, command=main, font="Arial 19")
 choiceHigh = Radiobutton(root, text="High Quality (Slower) ", variable=q, value=1, height="3", bg=background, fg=clr,font="Arial 19")
 choiceLow = Radiobutton(root, text="Low Quality (Faster)", variable=q, value=2, height="3" , bg=background, fg=clr,font="Arial 19")
 choiceAudio = Radiobutton(root,text="Audio Only (Offline Music)", variable=q, value=3,height="3", bg=background, fg=clr,font="Arial 19")
