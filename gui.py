@@ -2,22 +2,18 @@ from tkinter import *
 from tkinter import messagebox
 from pytube import YouTube
 root = Tk()
-root.geometry("1000x600") #window size
+root.geometry("1000x600")  #window size
 root.title("PreTube : Download Videos Without Youtube Premium") #window title
 root.iconbitmap("Logo.ico") #window logo
-background = "#4a5459" #background color
-clr = "#899ca5" #foreground
-text_color = "#d4d2d1" #text color
+background = "white" #background color
+fg = "#333" #foreground
+text_color = "black" #text color
+button_color = "red"
 root.config(bg=background) # window color set to background
-
-download_btn = PhotoImage(file="ytlogo.png")
-
-
+download_btn = PhotoImage(file="PreTubeLogo.png")
 img_label = Label(image=download_btn , bg=background, height="190")
 img_label.pack()
 q = IntVar()
-
-
 def error():
     messagebox.showerror("PreTube Error", "Invalid Link (URL)")
 
@@ -29,37 +25,40 @@ def main():
     if value == "" or "youtube" not in value:
         error()
 
+    yt = YouTube(value)
+    stream = None
+    success = ""
+
     if choice == 1:
-        yt = YouTube(value)
         stream = yt.streams.get_highest_resolution()
         stream.download()
-        success = Label(root, text="Success It's Downloaded", fg="green")
-        success.pack()
-        
+        success = "High quality video downloaded"
+
     if choice == 2:
-        yt = YouTube(value)
         stream = yt.streams.get_lowest_resolution()
         stream.download()
-        success = Label(root, text="Success It's Downloaded", fg="green")
-        success.pack()
+        success = "Low quality video downloaded"
 
     if choice == 3:
-        yt = YouTube(value)
         stream = yt.streams.get_audio_only()
-        stream.download()
-        success = Label(root, text="Success It's Downloaded", fg="green")
-        success.pack()
-    
+        success = "Audio has been downloaded"
 
-Input = Entry(root, width=70,fg = text_color, bg=clr, font="Helvetica 19")
-button = Button(root, text="Download", fg=background, bg=clr, command=main, font="Arial 19")
-choiceHigh = Radiobutton(root, text="High Quality (Slower) ", variable=q, value=1, height="3", bg=background, fg=clr,font="Arial 19")
-choiceLow = Radiobutton(root, text="Low Quality (Faster)", variable=q, value=2, height="3" , bg=background, fg=clr,font="Arial 19")
-choiceAudio = Radiobutton(root,text="Audio Only (Offline Music)", variable=q, value=3,height="3", bg=background, fg=clr,font="Arial 19")
-Input.pack()
-choiceHigh.pack()
-choiceLow.pack()
-choiceAudio.pack()
-button.pack()
+    if stream is not None:
+        stream.download()
+        successlabel = Label(root, text="Success : " + success)
+        successlabel.pack()
+
+
+Input = Entry(root, width=70, fg = text_color, borderwidth=2,relief="groove", bg="white", font="Arial 18" )
+button = Button(root, text="Download", fg=text_color, bg="red", borderwidth=0, command=main, font="YouTube-Sans-Bold 30")
+choiceHigh = Radiobutton(root, text="High Quality (Slower) ", variable=q, value=1, height="1", bg=button_color, fg=fg,font="Arial 19")
+choiceLow = Radiobutton(root, text="Low Quality (Faster)", variable=q, value=2, height="1" , bg=button_color, fg=fg,font="Arial 19")
+choiceAudio = Radiobutton(root,text="Audio Only (Offline Music)", variable=q, value=3,height="1", bg=button_color, fg=fg,font="Arial 19")
+
+Input.pack(pady=5,)
+choiceHigh.pack(pady=10)
+choiceLow.pack(pady=4)
+choiceAudio.pack(pady=4)
+button.pack(pady=4)
 
 root.mainloop()
