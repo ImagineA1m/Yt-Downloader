@@ -2,33 +2,35 @@ from tkinter import *
 from tkinter import messagebox
 from pytube import YouTube
 from tkinter import filedialog
-from tkvideo import tkvideo
+import webbrowser
 
 root = Tk()
 root.geometry("1000x600")  #window size
 root.title("PreTube : Download Videos Without Youtube Premium") #window title
-root.iconbitmap("images/Logo.ico/") #window logo
 background = "white" #background color
 fg = "black" #foreground
 text_color = "black" #text color
 button_color = "red"
 root.config(bg=background) # window color set to background
+root.iconbitmap("images/Logo.ico")
 download_btn = PhotoImage(file="images/PreTubeLogo.png/")
-img_label = Label(image=download_btn , bg=background, height="190")
+img_label = Label(image=download_btn, bg=background, height="190")
 img_label.pack()
 q = IntVar()
 
+
 def start():
-    global question
     question = messagebox.askquestion('Guide', 'Interested in viewing a guide on how to use this program?')
     if question == "yes":
-        print("guide test")
+        webbrowser.open_new("https://www.youtube.com/watch?v=CtkW9xBYzPc")
     else:
         return
+    
 
 def error():
     messagebox.showerror("PreTube Error", "Invalid Link (URL)")
 
+    
 def main():
     file_path = filedialog.askdirectory()
 
@@ -37,7 +39,6 @@ def main():
 
     if value == "" or "youtube" not in value:
         error()
-
 
     yt = YouTube(value)
     stream = None
@@ -55,11 +56,12 @@ def main():
 
     if choice == 3:
         stream = yt.streams.get_audio_only()
+        stream.download(file_path)
         success = "Audio has been downloaded"
 
     if stream is not None:
         stream.download(file_path)
-        successlabel = messagebox.showinfo("Pretube", f"{success}")
+        messagebox.showinfo("Pre-tube", f"{success}")
         print(file_path)
 
 
